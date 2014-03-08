@@ -27,3 +27,7 @@ template '/root/.my.cnf' do
     rootpasswd: node['mysql']['server_root_password']
   })
 end
+
+service 'mysql' do
+  action :restart
+end
