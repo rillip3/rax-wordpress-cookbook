@@ -46,5 +46,6 @@ mysql_database_user db['user'] do
   connection    mysql_connection_info
   database_name db['name']
   privileges    [:all]
+  host          "10.%"
   action        :grant
 end
