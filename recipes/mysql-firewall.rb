@@ -22,7 +22,7 @@ iface = 'eth1'
 
 case node['platform_family']
 when 'debian'
-  firewall_rule "Firewall rule, tcp/#{listen_port}" do
+  firewall_rule "Firewall rule, tcp/#{node['mysql']['port']}" do
     port      node['mysql']['port']
     interface iface
     protocol  :tcp
@@ -30,7 +30,7 @@ when 'debian'
     action    :allow
   end
 when 'rhel'
-  iptables_ng_rule 'Firewall rule, tcp/#{listen_port}' do
+  iptables_ng_rule "Firewall rule, tcp/#{node['mysql']['port']}" do
     name       'MySQL'
     chain      'INPUT'
     table      'filter'
