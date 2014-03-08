@@ -1,7 +1,7 @@
 # coding: utf-8
 #
 # Cookbook Name:: rax-wordpress
-# Recipe:: firewall
+# Recipe:: vsftpd-firewall
 #
 # Copyright 2014
 #
@@ -19,9 +19,12 @@
 #
 
 # Single ports to allow through
-listen_ports = [node['varnish']['listen_port']]
-listen_ports.push(25)
-listen_ports.push(443) if node['rax']['wordpress']['use_ssl']
+
+listen_ports = [ 21 ]
+
+# Port ranges to allow through for services like pasv ftp
+listen_ranges = [[node['vsftpd']['pasv_min_port'],
+                  node['vsftpd']['pasv_max_port']]]
 
 # Handle single ports first
 listen_ports.each do |listen_port|
@@ -40,6 +43,28 @@ listen_ports.each do |listen_port|
       table      'filter'
       ip_version [4, 6]
       rule       "-p tcp --dport #{listen_port} -j ACCEPT"
+      action     :create_if_missing
+    end
+  end
+end
+
+# Handle port ranges
+listen_ranges.each do |listen_range|
+  case node['platform_family']
+  when 'debian'
+    firewall_rule "Firewall range, tcp/#{listen_range.to_s}" do
+      port_range (listen_range.first .. listen_range.last)
+      protocol   :tcp
+      direction  :in
+      action     :allow
+    end
+  when 'rhel'
+    iptables_ng_rule 'Firewall range, tcp/#{listen_range.to_s}' do
+      name       'WordPress'
+      chain      'INPUT'
+      table      'filter'
+      ip_version [4, 6]
+      rule       "-p tcp --dport #{listen_range.first}:#{listen_range.last} -j ACCEPT"
       action     :create_if_missing
     end
   end
