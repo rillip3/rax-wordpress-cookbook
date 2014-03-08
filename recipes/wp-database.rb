@@ -23,33 +23,28 @@ include_recipe "mysql::ruby"
 
 db = node['wordpress']['db']
 
-if is_local_host? db['host']
-  include_recipe "mysql::server"
+mysql_connection_info = {
+  :host     => db['host'],
+  :username => 'root',
+  :password => node['mysql']['server_root_password']
+}
 
-  mysql_connection_info = {
-    :host     => db['host'],
-    :username => 'root',
-    :password => node['mysql']['server_root_password']
-  }
+mysql_database db['name'] do
+  connection  mysql_connection_info
+  action      :create
+end
 
-  mysql_database db['name'] do
-    connection  mysql_connection_info
-    action      :create
-  end
+mysql_database_user db['user'] do
+  connection    mysql_connection_info
+  password      db['pass']
+  host          db['host']
+  database_name db['name']
+  action        :create
+end
 
-  mysql_database_user db['user'] do
-    connection    mysql_connection_info
-    password      db['pass']
-    host          db['host']
-    database_name db['name']
-    action        :create
-  end
-
-  mysql_database_user db['user'] do
-    connection    mysql_connection_info
-    database_name db['name']
-    privileges    [:all]
-    action        :grant
-  end
-
+mysql_database_user db['user'] do
+  connection    mysql_connection_info
+  database_name db['name']
+  privileges    [:all]
+  action        :grant
 end
