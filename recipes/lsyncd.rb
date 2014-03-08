@@ -48,3 +48,7 @@ node['rax']['lsyncd']['clients'].each do |client|
     notifies :restart, 'service[lsyncd]', :delayed
   end
 end
+
+service 'lsyncd' do
+  action :start
+end
