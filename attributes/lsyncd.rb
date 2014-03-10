@@ -21,6 +21,8 @@
 default['rax']['lsyncd']['ssh']['pub'] = nil
 default['rax']['lsyncd']['ssh']['private_key'] = nil
 default['rax']['lsyncd']['clients'] = []
+default['rax']['lsyncd']['excludes_file'] = '/etc/lsyncd/lsyncd.exclusions'
+default['rax']['lsyncd']['exclusions'] = ['.ssh']
 
 pub_keypath = File.join(node['wordpress']['dir'], '.ssh/id_rsa')
 

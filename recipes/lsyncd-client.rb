@@ -28,7 +28,7 @@ if node['rax']['lsyncd']['ssh']['pub']
     action :create
   end
 
-  file File.join(node['wordpress']['dir'], '.ssh/id_rsa.pub') do
+  file File.join(node['wordpress']['dir'], '.ssh/authorized_keys') do
     content node['rax']['lsyncd']['ssh']['pub']
     owner node['rax']['wordpress']['user']['name']
     group node['rax']['wordpress']['user']['group']

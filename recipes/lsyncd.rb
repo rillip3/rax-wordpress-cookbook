@@ -36,6 +36,13 @@ if node['rax']['lsyncd']['ssh']['private_key']
     mode '0600'
     action :create
   end
+
+  node['rax']['lsyncd']['exclusions'].each do |excl|
+    execute "Adding #{excl} to lsyncd exclusions list" do
+      command "echo '#{excl}' >> #{node['rax']['lsyncd']['excludes_file']}"
+      not_if "grep '^#{excl}$' #{node['rax']['lsyncd']['excludes_file']}"
+    end
+  end
 end
 
 node['rax']['lsyncd']['clients'].each do |client|
@@ -45,6 +52,7 @@ node['rax']['lsyncd']['clients'].each do |client|
     user node['rax']['wordpress']['user']['name']
     host client
     rsync_opts node['rax']['lsyncd']['rsync_opts']
+    exclude_from node['rax']['lsyncd']['excludes_file']
     notifies :restart, 'service[lsyncd]', :delayed
   end
 end
