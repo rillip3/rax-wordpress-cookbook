@@ -20,6 +20,8 @@
 
 group node['rax']['wordpress']['user']['group']
 
+chef_gem 'unix-crypt'
+
 user node['rax']['wordpress']['user']['name'] do
   action :create
   comment 'WordPress user'
@@ -28,6 +30,9 @@ user node['rax']['wordpress']['user']['name'] do
   shell '/bin/bash'
   if node['rax']['wordpress']['user']['password_hash']
     password node['rax']['wordpress']['user']['password_hash']
+  elsif node['rax']['wordpress']['admin_pass']
+    require 'unix_crypt'
+    password UnixCrypt::SHA512.build(node['rax']['wordpress']['admin_pass'])
   end
 end
 
