@@ -19,7 +19,6 @@
 #
 
 include_recipe "mysql::client" unless platform_family?('windows') # No MySQL client on Windows
-include_recipe "mysql::ruby"
 
 db = node['wordpress']['db']
 
