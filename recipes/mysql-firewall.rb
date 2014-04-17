@@ -23,7 +23,7 @@ iface = 'eth1'
 case node['platform_family']
 when 'debian'
   firewall_rule "Firewall rule, tcp/#{node['mysql']['port']}" do
-    port      node['mysql']['port']
+    port      node['mysql']['port'].to_i
     interface iface
     protocol  :tcp
     direction :in
