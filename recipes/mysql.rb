@@ -31,7 +31,8 @@ end
 innodb_mempercent = node[:rax][:mysql][:innodb_buffer_pool_mempercent].to_f
 
 node.set[:rax_mysql_tunables][:config_options][:mysqld] = {
-  'innodb-buffer-pool-size' => "#{(node['memory']['total'].to_i * innodb_mempercent ).floor * 1024}"
+  'innodb-buffer-pool-size' => "#{(node['memory']['total'].to_i * innodb_mempercent ).floor * 1024}",
+  'query_cache_size' => '32M'
   }
 
 include_recipe 'rax-mysql-tunables::default'
