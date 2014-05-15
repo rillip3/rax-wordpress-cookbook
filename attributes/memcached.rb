@@ -17,10 +17,5 @@
 # limitations under the License.
 #
 
-default[:rax][:memcache][:server] = '127.0.0.1'
-default[:rax][:memcache][:port] = node['memcached']['port']
-default[:rax][:memcache][:persistent] = 1
-default[:rax][:memcache][:weight] = 1
-default[:rax][:memcache][:timeout] = 1
-default[:rax][:memcache][:retry_interval] = 15
-default[:rax][:memcache][:php_conf_dir] = '/etc/php5/apache2'
+default[:rax][:memcached][:interface] = 'eth1'
+default[:rax][:memcached][:clients] = []
