@@ -54,6 +54,13 @@ Creates the .ssh directory for the WordPress user, installs the public SSH key.
 Creates the .ssh directory for the WordPress user, installs the SSH private
 key.
 
+#### memcache
+Installs and configures PHP's memcache module
+
+#### memcached-firewall
+Configures the firewall on the memcached server. Memcached requires no
+authentication, so it's best to lock down access to the service.
+
 #### mysql
 Sets up /root/.my.cnf
 
