@@ -18,6 +18,10 @@
 # limitations under the License.
 #
 
+bash 'Remove default site' do
+  command "rm #{File.join(node['apache']['dir'], 'sites-enabled/000-default')}"
+end
+
 web_app 'wordpress' do
   template 'wordpress.conf.erb'
   docroot node['wordpress']['dir']
@@ -40,10 +44,6 @@ end
 if WordPress.use_ssl(node['rax']['apache']['ssl']['key'],
                      node['rax']['apache']['ssl']['cert'],
                      node['rax']['apache']['use_ssl'])
-
-  include_recipe 'apache2::mod_proxy'
-  include_recipe 'apache2::mod_proxy_http'
-  include_recipe 'apache2::mod_ssl'
 
   # Certs are installed in the x509 recipe
 
