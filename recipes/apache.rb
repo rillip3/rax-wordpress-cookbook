@@ -43,6 +43,7 @@ if WordPress.use_ssl(node['rax']['apache']['ssl']['key'],
 
   include_recipe 'apache2::mod_proxy'
   include_recipe 'apache2::mod_proxy_http'
+  include_recipe 'apache2::mod_ssl'
 
   # Certs are installed in the x509 recipe
 
